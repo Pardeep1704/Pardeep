@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment Form</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: rgb(252, 251, 251);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .payment-div {
+            width: 90%;
+            max-width: 350px;
+            padding: 20px;
+            background-color: #fdfcfc;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .payment-div h1 {
+            text-align: center;
+        }
+
+        .payment-div .success-message {
+            color: green;
+            text-align: center;
+            margin-top: 10px;
+        }
+
+        .payment-div .payment-options {
+            text-align: left;
+            margin-top: 10px;
+        }
+
+        .payment-div .payment-options img {
+            margin-right: 10px;
+            width: 50px;
+            height: 30px;
+        }
+
+        .payment-div form {
+            margin-top: 10px;
+        }
+
+        .payment-div label {
+            font-weight: bold;
+            display: block;
+        }
+
+        .payment-div input[type="text"],
+        .payment-div input[type="number"],
+        .payment-div input[type="password"] {
+            width: 95%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .payment-div .input-group {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .payment-div .input-group label {
+            flex-basis: calc(20% - 10px);
+            text-align: left;
+        }
+
+        .payment-div .input-group input {
+            flex-basis: calc(40% - 10px);
+        }
+
+        .payment-div .cvv-input-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .payment-div .cvv-input-container label {
+            flex-basis: calc(20% - 10px);
+            text-align: left;
+        }
+
+        .payment-div .cvv-input-container input {
+            flex-basis: calc(40% - 10px);
+        }
+
+        .payment-div .cvv-icon {
+            flex: .5;
+            text-align: center;
+            line-height: 40px;
+            font-size: 20px;
+            cursor: pointer;
+        }
+
+        .payment-div button {
+            background-color: #046cdb;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+        }
+
+        .payment-div .error-message {
+            color: red;
+            text-align: left;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div class="payment-div">
+        <h1>Add a new card</h1>
+        <p class="success-message" id="success-message"></p>
+        <div class="payment-options">
+            <h4>We Accept</h4>
+            <img src="rupay.png" alt="Rupay">
+            <img src="Visa-Logo-2006.png" alt="Visa">
+            <img src="MasterCard_Logo.svg.png" alt="MasterCard">
+            <img src="images.png" alt="American Express">
+        </div>
+        <form>
+            <label for="cardholder-name">Card Holder Name *</label>
+            <input type="text" id="cardholder-name" placeholder="John Smith" required>
+            <p class="error-message" id="name-error"></p>
+
+            <label for="card-number">Card Number *</label>
+            <input type="text" id="card-number" placeholder="XXXX XXXX XXXX XXXX" maxlength="19" oninput="formatCardNumber()" required>
+            <p class="error-message" id="card-number-error"></p>
+
+            <div class="input-group">
+                <label for="month">Month *</label>
+                <input type="number" id="month" placeholder="MM" min="1" max="12" required>
+                <p class="error-message" id="month-error"></p>
+            </div>
+
+            <div class="input-group">
+                <label for="year">Year *</label>
+                <input type="number" id="year" placeholder="YYYY" required>
+                <p class="error-message" id="year-error"></p>
+            </div>
+
+            <div class="cvv-input-container">
+                <label for="cvv">CVV *</label>
+                <input type="password" id="cvv" placeholder="123" min="100" max="999" required>
+                <i class="cvv-icon fas fa-eye" onclick="toggleCVVVisibility()"></i>
+                <p class="error-message" id="cvv-error"></p>
+            </div>
+            <button type="button" onClick="addCard()">Add Card</button>
+        </form>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/js/all.min.js"></script>
+
+    <script>
+        function addCard() {
+            // Clear success message
+            document.getElementById("success-message").textContent = "";
+
+            // Validation function
+            const cardholderName = document.getElementById("cardholder-name").value;
+            const cardNumberInput = document.getElementById("card-number");
+            const cardNumber = cardNumberInput.value.replace(/\s/g, ''); // Remove spaces
+            const month = document.getElementById("month").value;
+            const year = document.getElementById("year").value;
+            const cvv = document.getElementById("cvv").value;
+
+            // Basic validation, you can add more specific checks
+            if (cardholderName.trim() === "") {
+                document.getElementById("name-error").textContent = "Name is required.";
+            } else {
+                document.getElementById("name-error").textContent = "";
+            }
+
+            if (cardNumber.trim() === "" || isNaN(cardNumber) || cardNumber.length !== 16) {
+                document.getElementById("card-number-error").textContent = "Valid 16-digit card number is required.";
+            } else {
+                // Detect and display card type
+                const cardType = detectCardType(cardNumber);
+                document.getElementById("card-number").setAttribute("placeholder", "XXXX XXXX XXXX XXXX (" + cardType + ")");
+                document.getElementById("card-number-error").textContent = "";
+            }
+
+            if (isNaN(month) || month < 1 || month > 12) {
+                document.getElementById("month-error").textContent = "Valid month is required.";
+            } else {
+                document.getElementById("month-error").textContent = "";
+            }
+
+            if (year.trim() === "" || isNaN(year)) {
+                document.getElementById("year-error").textContent = "Valid year is required.";
+            } else {
+                document.getElementById("year-error").textContent = "";
+            }
+
+            if (cvv.trim() === "" || isNaN(cvv) || cvv.length !== 3) {
+                document.getElementById("cvv-error").textContent = "Valid CVV is required.";
+            } else {
+                document.getElementById("cvv-error").textContent = "";
+                document.getElementById("success-message").textContent = "Card added successfully";
+            }
+        }
+
+        function detectCardType(cardNumber) {
+            const visaPattern = /^4/;
+            const mastercardPattern = /^5[1-5]/;
+            const amexPattern = /^3[47]/;
+            const discoverPattern = /^6(?:011|5)/;
+
+            if (visaPattern.test(cardNumber)) {
+                return "Visa";
+            } else if (mastercardPattern.test(cardNumber)) {
+                return "MasterCard";
+            } else if (amexPattern.test(cardNumber)) {
+                return "American Express";
+            } else if (discoverPattern.test(cardNumber)) {
+                return "Discover";
+            } else {
+                return "Unknown";
+            }
+        }
+
+        function toggleCVVVisibility() {
+            const cvvInput = document.getElementById("cvv");
+            const cvvIcon = document.querySelector(".cvv-icon");
+
+            if (cvvInput.type === "password") {
+                cvvInput.type = "text";
+                cvvIcon.classList.remove("fa-eye");
+                cvvIcon.classList.add("fa-eye-slash");
+            } else {
+                cvvInput.type = "password";
+                cvvIcon.classList.remove("fa-eye-slash");
+                cvvIcon.classList.add("fa-eye");
+            }
+        }
+
+        function formatCardNumber() {
+            const cardNumberInput = document.getElementById("card-number");
+            let cardNumber = cardNumberInput.value.replace(/\s/g, ''); // Remove spaces
+            cardNumber = cardNumber.replace(/(.{4})/g, '$1 '); // Add a space after every 4 digits
+            cardNumberInput.value = cardNumber.trim(); // Remove trailing space
+        }
+    </script>
+</body>
+</html>
