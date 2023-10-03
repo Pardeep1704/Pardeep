@@ -1,0 +1,113 @@
+.payment-div {
+  width: 90%;
+  max-width: 350px;
+  padding: 10px;
+  background-color: #fdfcfc;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  margin: 0 auto; 
+  flex-direction: column; 
+  align-items: left
+  ; 
+}
+.payment-div h1 {
+  text-align: center;
+}
+
+.payment-div .success-message {
+  color: green;
+  text-align: center;
+  margin-top: 10px;
+}
+
+.payment-div .payment-options {
+  text-align: left;
+  margin-top: 10px;
+}
+
+.payment-div .payment-options img {
+  margin-right: 10px;
+  width: 50px;
+  height: 30px;
+}
+
+.payment-div form {
+  margin-top: 10px;
+}
+
+.payment-div label {
+  font-weight: bold;
+  display: block;
+}
+
+.payment-div input[type="text"],
+.payment-div input[type="number"],
+.payment-div input[type="password"] {
+  width: 95%;
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.payment-div .input-group {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+}
+
+.payment-div .input-group label {
+  flex-basis: calc(20% - 10px);
+  text-align: left;
+}
+
+.payment-div .input-group input {
+  flex-basis: calc(40% - 10px);
+}
+
+.payment-div .cvv-input-container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.payment-div .cvv-input-container label {
+  flex-basis: calc(20% - 10px);
+  text-align: left;
+}
+
+.payment-div .cvv-input-container input {
+  flex-basis: calc(40% - 10px);
+}
+
+.payment-div .cvv-icon {
+  flex: .5;
+  text-align: center;
+  line-height: 40px;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+.payment-div button {
+  background-color: #046cdb;
+  color: #fff;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  width: 100%;
+}
+
+.payment-div .error-message {
+  color: red;
+  text-align: left;
+  font-size: 12px;
+}
+
+.payment-div .card-type {
+  color: #333;
+  font-weight: bold;
+  margin-top: 10px;
+}
