@@ -118,7 +118,13 @@
         .payment-div .error-message {
             color: red;
             text-align: left;
-            font-size: 14px;
+            font-size: 12px;
+        }
+
+        .payment-div .card-type {
+            color: #333;
+            font-weight: bold;
+            margin-top: 10px;
         }
     </style>
 </head>
@@ -128,7 +134,7 @@
         <p class="success-message" id="success-message"></p>
         <div class="payment-options">
             <h4>We Accept</h4>
-            <img src="rupay.png" alt="Rupay">
+           <img src="rupay.png" alt="Rupay">
             <img src="Visa-Logo-2006.png" alt="Visa">
             <img src="MasterCard_Logo.svg.png" alt="MasterCard">
             <img src="images.png" alt="American Express">
@@ -140,6 +146,7 @@
 
             <label for="card-number">Card Number *</label>
             <input type="text" id="card-number" placeholder="XXXX XXXX XXXX XXXX" maxlength="19" oninput="formatCardNumber()" required>
+            <p class="card-type"></p>
             <p class="error-message" id="card-number-error"></p>
 
             <div class="input-group">
@@ -168,8 +175,9 @@
 
     <script>
         function addCard() {
-            // Clear success message
+            // Clear success message and card type
             document.getElementById("success-message").textContent = "";
+            document.querySelector(".card-type").textContent = "";
 
             // Validation function
             const cardholderName = document.getElementById("cardholder-name").value;
@@ -191,7 +199,8 @@
             } else {
                 // Detect and display card type
                 const cardType = detectCardType(cardNumber);
-                document.getElementById("card-number").setAttribute("placeholder", "XXXX XXXX XXXX XXXX (" + cardType + ")");
+                document.querySelector(".card-type").textContent = "Card Type: " + cardType;
+
                 document.getElementById("card-number-error").textContent = "";
             }
 
